@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brunch Food</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              bg: "#111111",
+              panel: "#1b1b1b",
+              panel2: "#232323",
+              text: "#f3ede7",
+              muted: "#aaa39b",
+              accent: "#f3a34f",
+            },
+            fontFamily: {
+              display: ["Montserrat", "ui-sans-serif", "system-ui"],
+              body: ["Be Vietnam Pro", "ui-sans-serif", "system-ui"],
+            },
+            boxShadow: {
+              soft: "0 18px 50px rgba(0,0,0,0.35)",
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Montserrat:wght@700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at top, rgba(243, 163, 79, 0.14), transparent 24%),
+          linear-gradient(180deg, #141414 0%, #101010 100%);
+      }
+
+      .scroll-hide::-webkit-scrollbar {
+        display: none;
+      }
+
+      .scroll-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.65s ease, transform 0.65s ease;
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .menu-link.active {
+        color: #f3a34f;
+      }
+
+      .menu-link.active::after {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+
+      .menu-link::after {
+        content: "";
+        display: block;
+        height: 2px;
+        margin-top: 6px;
+        border-radius: 999px;
+        background: #f3a34f;
+        transform: scaleX(0);
+        transform-origin: center;
+        opacity: 0;
+        transition: transform 0.24s ease, opacity 0.24s ease;
+      }
+
+      .nav-icon {
+        font-size: 14px;
+        line-height: 1;
+      }
+
+      .juice-icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .card-hover {
+        transition: transform 0.24s ease, background-color 0.24s ease, box-shadow 0.24s ease;
+      }
+
+      .card-hover:hover {
+        transform: translateY(-2px);
+      }
+
+      .size-chip {
+        transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+      }
+
+      .size-chip:hover {
+        transform: translateY(-1px);
+      }
+
+      .size-chip.active {
+        background: #f3a34f;
+        color: #111111;
+      }
+    </style>
+  </head>
+  <body class="font-body text-text selection:bg-accent selection:text-bg">
+    <div id="top"></div>
+    <div class="mx-auto min-h-screen max-w-[430px] bg-bg shadow-soft">
+      <header class="sticky top-0 z-50 bg-bg/95 backdrop-blur-md">
+        <div class="flex items-center gap-2 px-3 py-3">
+          <img
+            class="h-[18px] w-[18px] object-contain"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAA0CAYAAAAaNmH0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAQZSURBVGhD7ZhfaFtVHMe/90+X9salDWmzdtEtrFtDYbbOsX9KRBkMRMYQcSV1DAUVwXZQmAx82XwRxgr78+KqIuylhckEFdEHfWhj2tm1Y2MraVmkf1galjS6NDZt0yTXB3Oz3GPOvTdpwl3hfh5/53fD53vuOSeHy9hsNhEbFJYsbCQMeb0w5PXCkNcLQ14vDHm9MOT1QrO89ZlNZKlkWIZBi8OCNqcVLQ4LWIYhWzTBaLkSd7id+KzzBVz6wY+rP0+Rw5p5rt6Ms542HNmzFYKJz9UjsRWc7b+L67/PyPrV4ARBOEcW82my1uDKhwfgsAk46KrHcjKDsUCUbFPlzUPbcK3nZbzYbEMVL3/h5moer7U1Yv6vZUzMPZaNKaG6bI4d3IbtdjMAQDDx+PTt3fjodRfZpkiH24nLH+xDvaWaHMohmHi8f2QXajZx5BAVVfl2Zx049smalAKceHWHrI/G3p02nPO0y5YJDafdjF1bLWSZiqp8Q+3/Z0sw8fj85B5NAbrecBX8jXKgKh+JrZAlQGMAl8OC/S0NZJlKMiVidS1NlqmoygdCcYiU80gtwPNOK2qFKrJMZSoYw4P5OFmmoip/c2oBsUSSLOdQClBdxUHrEb66lsaN4TlkaDNVAFV5nz+MX8aD1NlHXoAOt1NWjy+vIaPwXD7D/ggGBqfJsiKq8gBw5tptjEyGybIMwcTj1NFW2PM25/Sjf7CYWJP1FWIsEEVX3x9FzTq0yi+tpODp9WLYTw8QCMXhuTCEcHaDNzduxlfdh7Cljn7SiCLw290Q3un14tHjwgeDEpquBxLmah4Dp914qdUuqwdCcRw/P4i5yBKQFe//xI3mxs0AgFQ6g0hsFQ21JvAci2QqjYm5GK786MdPt4JFz7hEUfIoEECLeP/gNE5/M16yJI2i5ZEXwF5XoygOAL/eCaGz11t2cZQqj+y1lucYJFMZgCKO7Mxf/N6P8zfuy+rlQPVWSUMEkM6eg6S4KAIiRDAMA5ZlcKClHhzLwqew4UtB02mjRCHx70Zm8e4lH6LxVQAAz7HoOdaKM2/tJp5eHyXPPBTEu/tGMflwEfdm/sbh9iYIJr4ib6BkeSVxaR/Mhpdwb7ZyAUqSLyT+rW8GH38xihRxH6hkgKLlaeJdV0epx2GlAhQlX4q4RCUCaJYnxTOiiOveGXT33VIVl5gNL2H8z2ju68F6A2iSp4mf+lK7uMTDhUTZAqjKl1NcolwBVP+kPK84sb3hv08f5RCXGJmM4L3LPiwsPvkjO7r/WTRZa8hWKqozPzQRBsey2Ntsw8DQNHq+Hlu3uIT0Bg63NyEYTaCz14tgNEG2UdF8MXM5LHgwHy+beD4Om4CVZDp3ndCKZvmnEdU1/zRjyOuFIa8XhrxebGj5fwEIOuHOgXsLywAAAABJRU5ErkJggg=="
+            alt="Spoon and knife"
+          />
+          <h1 class="font-display text-[15px] font-extrabold uppercase tracking-[0.16em] text-accent">Brunch Food</h1>
+        </div>
+
+        <nav class="scroll-hide flex items-center gap-4 overflow-x-auto px-3 pb-3 text-[11px] font-bold uppercase tracking-[0.14em] text-muted">
+          <a class="menu-link active shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#burgers"><span class="material-symbols-outlined nav-icon">lunch_dining</span>Burgers</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#pizza"><span class="material-symbols-outlined nav-icon">local_pizza</span>Pizza</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#pasta"><span class="material-symbols-outlined nav-icon">dinner_dining</span>Pasta</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#fast"><span class="material-symbols-outlined nav-icon">skillet</span>Fast</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#trad"><span class="material-symbols-outlined nav-icon">soup_kitchen</span>Trad</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#pasticcio"><span class="material-symbols-outlined nav-icon">bakery_dining</span>Pasticcio</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#tacos"><span class="material-symbols-outlined nav-icon">tapas</span>Tacos</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#shawarma"><span class="material-symbols-outlined nav-icon">kebab_dining</span>Shawarma</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#chicken"><span class="material-symbols-outlined nav-icon">mode_fan</span>Poulet</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#sandwich"><span class="material-symbols-outlined nav-icon">lunch_dining</span>Sandwich</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#panini"><span class="material-symbols-outlined nav-icon">ramen_dining</span>Panini</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#special"><span class="material-symbols-outlined nav-icon">restaurant_menu</span>Special</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#salads"><span class="material-symbols-outlined nav-icon">eco</span>Salades</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#drinks"><span class="material-symbols-outlined nav-icon">local_bar</span>Drinks</a>
+          <a class="menu-link shrink-0 whitespace-nowrap inline-flex items-center gap-1.5" href="#dessert"><span class="material-symbols-outlined nav-icon">cake</span>Dessert</a>
+        </nav>
+      </header>
+
+      <main class="space-y-6 px-3 pb-10 pt-3">
+        <!-- Special offer section with a large image, gradient overlay, and text content -->
+        <section class="reveal rounded-[1.6rem] bg-panel p-2 shadow-soft">
+          <h1 class="font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Special Offer</h1>
+          <div class="overflow-hidden rounded-[1.35rem]">
+            <div class="relative h-[230px] overflow-hidden rounded-[1.35rem] bg-[#221813]">
+              <img
+                class="h-full w-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWXrUf6DiZqTxDEeyzWeVAA_kkgrVs740oWcT36YxF_X_uJaOAYpuyJ-9jCwPfE1fYbwwaEshi4ifzvhmNfMUQkJM44jTQpD2GLuVQT6jlxsBfYIyrT9y52TlZmecGGOOUwBTIeUSmddYmbc0Ak0eyJ4beYSLIV3xBPkQ1J7uIdC8-0dNODqdpBmLdy-iEM8LuN0nz96TwClcQzpb9OdF6VA4IZBHpbB4FoaqJaa6PaXiWMAm53bsDkwrv9hnBSRFEiTb4vRiyiRk"
+                alt="Signature burger"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-bg via-bg/20 to-transparent"></div>
+            </div>
+          </div>
+        </section>
+        <!-- end of special offer section -->
+
+        <section id="burgers" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Burgers</h3>
+          <div class="flex items-center justify-center">
+            <div class="relative h-[172px] w-[172px] rounded-full bg-[#1e1e1e] p-3 shadow-soft">
+              <img
+                class="h-full w-full rounded-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYZymr3MS3FRGjpCaPwioxJshlv7lHplngRsutY_DCvuZgQUTQYc_bLCURZdHUsyhvO6P16FK3Wizyf88ImmwAtTkhbpxJx5kMgE65erBr4g-5A_PUbe6Xg7G_X15vc-Eo_OhacKSh0CyDOw8mkb_mFKmOXBpG30DifLVRaf8U_K3Auy_LSumBwPGKvZTlbzlCZSveaQall4KOZP-fY7aG39L3jXboXkpLSVXrP3sD9BpQGcQya_-zA9Rt8AJftgRf0Dvmr3rI0y8"
+                alt="Burger"
+              />
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div class="card-hover flex items-start justify-between gap-3 rounded-2xl bg-panel2 px-4 py-3">
+              <div>
+                <h4 class="text-[15px] font-extrabold">Cheese Burger</h4>
+                <p class="max-w-[22ch] text-[11px] italic leading-4 text-muted">Classic beef patty, cheddar, secret sauce</p>
+              </div>
+              <span class="text-[13px] font-extrabold text-accent">25 DH</span>
+            </div>
+            <div class="card-hover flex items-start justify-between gap-3 rounded-2xl bg-panel2 px-4 py-3">
+              <div>
+                <h4 class="text-[15px] font-extrabold">Double Burger</h4>
+                <p class="max-w-[24ch] text-[11px] italic leading-4 text-muted">Two beef patties, double cheese, caramelized onions</p>
+              </div>
+              <span class="text-[13px] font-extrabold text-accent">35 DH</span>
+            </div>
+            <div class="card-hover flex items-start justify-between gap-3 rounded-2xl bg-panel2 px-4 py-3">
+              <div>
+                <h4 class="text-[15px] font-extrabold">Chicken Burger</h4>
+                <p class="max-w-[22ch] text-[11px] italic leading-4 text-muted">Crispy fried chicken, coleslaw, brioche</p>
+              </div>
+              <span class="text-[13px] font-extrabold text-accent">30 DH</span>
+            </div>
+            <div class="card-hover flex items-start justify-between gap-3 rounded-2xl bg-panel2 px-4 py-3">
+              <div>
+                <h4 class="text-[15px] font-extrabold">Burger Simple</h4>
+                <p class="max-w-[22ch] text-[11px] italic leading-4 text-muted">Essential flavors, perfected</p>
+              </div>
+              <span class="text-[13px] font-extrabold text-accent">22 DH</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="pizza" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Nos Pizza</h3>
+          <div class="rounded-[1.35rem] bg-panel p-4 shadow-soft">
+            <img
+              class="h-[170px] w-full rounded-[1.1rem] object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtmwXBnesjxs84Xzv8Yv08pSl_14OJPEcCnGvh2xpjJqpoe_S0PLPMzXlHTTawh55A5bj7yR_wSaPd6261aD880zf7cC2EicFBE-8IJUseJfj33OcxoZ6yah-VDXC3bjTDLiCi5ulMum6fhYJlDiFqFbo7-RWWRdYVrswJmYh7wu7KNeigppa4DK1ES72k_4zSnU76I7j2xytMoPZuNp8uYpppUqfcwpO2B-ppeb0aF41vXtzYpiWWSsAobgFLkxmhMZNk8_fRz2o"
+              alt="Pizza"
+            />
+            <div class="mt-4">
+              <p class="text-[10px] font-bold uppercase tracking-[0.28em] text-accent">Signature platter</p>
+              <h4 class="mt-2 font-display text-[21px] font-extrabold leading-6">The Pizza Feast</h4>
+              <p class="mt-2 text-[12px] leading-5 text-muted">A curated selection of our finest toppings, perfect for sharing. Hand-stretched dough, stone-baked to perfection.</p>
+              <div class="mt-4 grid grid-cols-2 gap-2">
+                <div class="rounded-xl bg-panel2 p-3">
+                  <p class="text-[12px] font-bold text-accent">Margarita</p>
+                  <p class="text-[11px] text-muted">22 DH</p>
+                </div>
+                <div class="rounded-xl bg-panel2 p-3">
+                  <p class="text-[12px] font-bold text-accent">4 Saisons</p>
+                  <p class="text-[11px] text-muted">40 DH</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-1 rounded-[1.2rem] bg-panel p-4 shadow-soft">
+            <div class="flex items-center justify-between py-2 text-[12px]"><span>Thon</span><span class="text-accent">30 DH</span></div>
+            <div class="flex items-center justify-between py-2 text-[12px]"><span>Viande Hachee</span><span class="text-accent">33 DH</span></div>
+            <div class="flex items-center justify-between py-2 text-[12px]"><span>Poulet</span><span class="text-accent">30 DH</span></div>
+            <div class="flex items-center justify-between py-2 text-[12px]"><span>Fruit de Mer</span><span class="text-accent">40 DH</span></div>
+            <div class="flex items-center justify-between py-2 text-[12px]"><span>Nordique</span><span class="text-accent">45 DH</span></div>
+          </div>
+        </section>
+
+        <section id="pasta" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Pasta</h3>
+          <div class="overflow-hidden rounded-[1.35rem] bg-panel shadow-soft">
+            <img class="h-[180px] w-full object-cover" src="assets/pasta.png" alt="Pasta" />
+          </div>
+          <div class="rounded-[1.2rem] bg-panel p-4 shadow-soft">
+            <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-accent">Choose your base</p>
+            <div class="mt-4 space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="flex h-6 w-6 items-center justify-center rounded-full bg-accent/15 text-[11px] font-bold text-accent">P</div>
+                <span class="text-[13px]">Penne</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="flex h-6 w-6 items-center justify-center rounded-full bg-accent/15 text-[11px] font-bold text-accent">S</div>
+                <span class="text-[13px]">Spaghetti</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="flex h-6 w-6 items-center justify-center rounded-full bg-accent/15 text-[11px] font-bold text-accent">T</div>
+                <span class="text-[13px]">Tagliatelle <span class="text-[10px] text-muted">+05 DH</span></span>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-[1.2rem] bg-panel p-4 shadow-soft">
+            <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-accent">Sauce blanche ou tomate</p>
+            <div class="mt-3 space-y-3">
+              <div class="flex items-center justify-between"><span class="text-[12px]">Poulet</span><span class="text-[12px] text-accent">30 DH</span></div>
+              <div class="flex items-center justify-between"><span class="text-[12px]">Viande Hachee</span><span class="text-[12px] text-accent">35 DH</span></div>
+              <div class="flex items-center justify-between"><span class="text-[12px]">Fruit De Mer</span><span class="text-[12px] text-accent">40 DH</span></div>
+              <div class="flex items-center justify-between"><span class="text-[12px]">Nordique (Saumon)</span><span class="text-[12px] text-accent">45 DH</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="fast" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Plats rapides</h3>
+          <div class="overflow-hidden rounded-[1.35rem] bg-panel shadow-soft">
+            <img class="h-[180px] w-full object-cover" src="assets/fast.png" alt="Plats rapides" />
+          </div>
+          <div class="rounded-[1.2rem] bg-panel p-4 shadow-soft">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Brochette Poulet</span><span class="text-accent">30 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Brochette Viande Hachee</span><span class="text-accent">35 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Plats Mixte</span><span class="text-accent">35 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Brochette Poisson</span><span class="text-accent">40 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Plat Escalope</span><span class="text-accent">30 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Plat Dind</span><span class="text-accent">25 DH</span></div>
+            </div>
+          </div>
+          <div class="rounded-[1.2rem] bg-panel2 p-4 shadow-soft">
+            <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-accent">Supplement</p>
+            <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+              <div class="rounded-xl bg-bg/40 p-2"><p class="text-[11px]">Fromage Carre</p><p class="text-[11px] font-bold text-accent">02 DH</p></div>
+              <div class="rounded-xl bg-bg/40 p-2"><p class="text-[11px]">Fromage Rouge</p><p class="text-[11px] font-bold text-accent">05 DH</p></div>
+              <div class="rounded-xl bg-bg/40 p-2"><p class="text-[11px]">Cordon Bleu</p><p class="text-[11px] font-bold text-accent">12 DH</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="trad" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Plats Traditionnelles</h3>
+          <div class="overflow-hidden rounded-[1.35rem] bg-panel shadow-soft">
+            <img class="h-[180px] w-full object-cover" src="assets/trad.png" alt="Traditional dishes" />
+          </div>
+          <div class="rounded-[1.2rem] bg-panel p-4 shadow-soft">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Mini Pastilla Poulet</span><span class="text-accent">40 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Mini Pastilla Fruit de Mer</span><span class="text-accent">55 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Soupe de Poisson</span><span class="text-accent">20 DH</span></div>
+            </div>
+          </div>
+          <div class="rounded-[1.2rem] bg-panel2 p-4 shadow-soft">
+            <p class="text-[10px] font-bold uppercase tracking-[0.25em] text-accent">Supplement</p>
+            <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+              <div class="rounded-xl bg-bg/40 p-2"><p class="text-[11px]">Thon</p><p class="text-[11px] font-bold text-accent">05 DH</p></div>
+              <div class="rounded-xl bg-bg/40 p-2"><p class="text-[11px]">Oeuf</p><p class="text-[11px] font-bold text-accent">03 DH</p></div>
+              <div class="rounded-xl bg-bg/40 p-2"><p class="text-[11px]">Frite</p><p class="text-[11px] font-bold text-accent">05 DH</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="pasticcio" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Pasticcio</h3>
+          <div class="overflow-hidden rounded-[1.35rem] bg-panel shadow-soft">
+            <img class="h-[180px] w-full object-cover" src="assets/pasticcio.png" alt="Pasticcio" />
+          </div>
+          <div class="rounded-[1.2rem] bg-panel p-4 shadow-soft">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Poulet</span><span class="text-accent">25 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Viande Hachee</span><span class="text-accent">30 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Fruit De Mer</span><span class="text-accent">40 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Mixte</span><span class="text-accent">35 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Escalope</span><span class="text-accent">30 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Shawarma</span><span class="text-accent">30 DH</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="tacos" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Nos Tacos</h3>
+          <div class="overflow-hidden rounded-[1.35rem] bg-panel shadow-soft">
+            <div class="relative">
+              <img class="h-[180px] w-full object-cover" src="assets/tacos.png" alt="Tacos" />
+              <span class="absolute right-3 top-3 rounded-full bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-bg shadow-soft">Avec Frites</span>
+            </div>
+          </div>
+          <div class="rounded-[1.2rem] bg-panel p-4 shadow-soft" data-size-group="tacos">
+            <div class="space-y-2">
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"25 DH","double":"33 DH","fries":"+05 DH"}'>
+                <span>Poulet</span><span class="menu-price text-accent">25 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"30 DH","double":"40 DH","fries":"+05 DH"}'>
+                <span>Mixte</span><span class="menu-price text-accent">30 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"30 DH","double":"40 DH","fries":"+05 DH"}'>
+                <span>Escalope</span><span class="menu-price text-accent">30 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"30 DH","double":"40 DH","fries":"+05 DH"}'>
+                <span>Viande Hachee</span><span class="menu-price text-accent">30 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"30 DH","double":"40 DH","fries":"+05 DH"}'>
+                <span>Sepia</span><span class="menu-price text-accent">30 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"25 DH","double":"35 DH","fries":"+05 DH"}'>
+                <span>Shawarma</span><span class="menu-price text-accent">25 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"40 DH","double":"50 DH","fries":"+05 DH"}'>
+                <span>Fruit de Mer</span><span class="menu-price text-accent">40 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"45 DH","double":"55 DH","fries":"+05 DH"}'>
+                <span>Nordique</span><span class="menu-price text-accent">45 DH</span>
+              </div>
+            </div>
+            <div class="mt-4 grid grid-cols-3 gap-2 text-center" data-size-controls>
+              <button type="button" class="size-chip active rounded-xl bg-panel2 p-2"><p class="text-[10px] font-bold">Normal</p></button>
+              <button type="button" class="size-chip rounded-xl bg-panel2 p-2"><p class="text-[10px] font-bold">Double</p></button>
+            </div>
+          </div>
+        </section>
+
+        <section id="shawarma" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Specialite Shawarma</h3>
+          <div class="overflow-hidden rounded-[1.35rem] bg-panel shadow-soft">
+            <img class="h-[180px] w-full object-cover" src="assets/shawarma.png" alt="Shawarma" />
+          </div>
+          <div class="rounded-[1.2rem] bg-panel p-4 shadow-soft">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Plats Shawarma</span><span class="text-accent">30 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Sandwish Shawarma</span><span class="text-accent">15 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Sandwish Shawarma Double</span><span class="text-accent">25 DH</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="chicken" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Poulet</h3>
+          <div class="overflow-hidden rounded-[1.35rem] bg-panel shadow-soft">
+            <img class="h-[180px] w-full object-cover" src="assets/chicken.png" alt="Roasted chicken" />
+          </div>
+          <div class="rounded-[1.2rem] bg-panel p-4 shadow-soft">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Poulet Rotti</span><span class="text-accent">85 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Poulet Complet Simple</span><span class="text-accent">110 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Poulet Tout Option</span><span class="text-accent">55 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>1/2 Poulet avec Salade et Frite</span><span class="text-accent">30 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>1/4 Poulet avec Salade et Frite</span><span class="text-accent">25 DH</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="sandwich" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Sandwich</h3>
+          <div class="overflow-hidden rounded-[1.35rem] bg-panel shadow-soft">
+            <div class="relative">
+              <img class="h-[180px] w-full object-cover" src="assets/sandwich.png" alt="Sandwich" />
+              <span class="absolute right-3 top-3 rounded-full bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-bg shadow-soft">Avec Frites</span>
+            </div>
+          </div>
+          <div class="rounded-[1.2rem] bg-panel p-4 shadow-soft">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Poulet</span><span class="text-accent">15 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Dind</span><span class="text-accent">15 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Mixte</span><span class="text-accent">20 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Viande Hachee</span><span class="text-accent">16 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Sipia</span><span class="text-accent">16 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Shawarma</span><span class="text-accent">15 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Fruit De Mer</span><span class="text-accent">20 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Escalope</span><span class="text-accent">16 DH</span></div>
+            </div>
+            <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+              <div class="rounded-xl bg-panel2 p-2"><p class="text-[10px] font-bold text-accent">Normal</p></div>
+              <div class="rounded-xl bg-panel2 p-2"><p class="text-[10px] font-bold text-accent">Double</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="panini" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Panini</h3>
+          <div class="overflow-hidden rounded-[1.35rem] bg-panel shadow-soft">
+            <div class="relative">
+              <img class="h-[180px] w-full object-cover" src="assets/panini.png" alt="Panini" />
+              <span class="absolute right-3 top-3 rounded-full bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-bg shadow-soft">Avec Frites</span>
+            </div>
+          </div>
+          <div class="rounded-[1.2rem] bg-panel p-4 shadow-soft" data-size-group="panini">
+            <div class="space-y-2">
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"15 DH","double":"25 DH","fries":"Avec Frites"}'>
+                <span>Poulet</span><span class="menu-price text-accent">15 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"15 DH","double":"25 DH","fries":"Avec Frites"}'>
+                <span>Dind</span><span class="menu-price text-accent">15 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"20 DH","double":"30 DH","fries":"Avec Frites"}'>
+                <span>Mixte</span><span class="menu-price text-accent">20 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"16 DH","double":"26 DH","fries":"Avec Frites"}'>
+                <span>Viande Hachee</span><span class="menu-price text-accent">16 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"16 DH","double":"26 DH","fries":"Avec Frites"}'>
+                <span>Sipia</span><span class="menu-price text-accent">16 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"15 DH","double":"25 DH","fries":"Avec Frites"}'>
+                <span>Shawarma</span><span class="menu-price text-accent">15 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"20 DH","double":"30 DH","fries":"Avec Frites"}'>
+                <span>Fruit De Mer</span><span class="menu-price text-accent">20 DH</span>
+              </div>
+              <div class="menu-size-row flex items-center justify-between py-2 text-[12px]" data-sizes='{"normal":"16 DH","double":"26 DH","fries":"Avec Frites"}'>
+                <span>Escalope</span><span class="menu-price text-accent">16 DH</span>
+              </div>
+            </div>
+            <div class="mt-4 grid grid-cols-3 gap-2 text-center" data-size-controls>
+              <button type="button" class="size-chip active rounded-xl bg-panel2 p-2"><p class="text-[10px] font-bold">Normal</p></button>
+              <button type="button" class="size-chip rounded-xl bg-panel2 p-2"><p class="text-[10px] font-bold">Double</p></button>
+            </div>
+          </div>
+        </section>
+
+        <section id="special" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Plats Special</h3>
+          <div class="rounded-[1.2rem] bg-panel p-4 shadow-soft">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Emince poulet</span><span class="text-accent">40 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Cordon Bleu</span><span class="text-accent">35 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Calamar</span><span class="text-accent">60 DH</span></div>
+              <div class="flex items-center justify-between py-2 text-[12px]"><span>Sipia</span><span class="text-accent">35 DH</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="salads" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Salades</h3>
+          <div class="space-y-2">
+            <div class="card-hover flex items-center justify-between rounded-xl bg-panel2 px-3 py-4"><span class="text-[12px]">Salade Mexicaine</span><span class="text-[11px] font-bold text-accent">15 DH</span></div>
+            <div class="card-hover flex items-center justify-between rounded-xl bg-panel2 px-3 py-4"><span class="text-[12px]">Salade Normal</span><span class="text-[11px] font-bold text-accent">10 DH</span></div>
+            <div class="card-hover flex items-center justify-between rounded-xl bg-panel2 px-3 py-4"><span class="text-[12px]">Salade Nicoise</span><span class="text-[11px] font-bold text-accent">17 DH</span></div>
+            <div class="card-hover flex items-center justify-between rounded-xl bg-panel2 px-3 py-4"><span class="text-[12px]">Salade Cesar</span><span class="text-[11px] font-bold text-accent">20 DH</span></div>
+            <div class="card-hover flex items-center justify-between rounded-xl bg-panel2 px-3 py-4"><span class="text-[12px]">Salade Brunch</span><span class="text-[11px] font-bold text-accent">30 DH</span></div>
+            <div class="card-hover flex items-center justify-between rounded-xl bg-panel2 px-3 py-4"><span class="text-[12px]">Salade Pecheur</span><span class="text-[11px] font-bold text-accent">45 DH</span></div>
+          </div>
+        </section>
+
+        <section id="drinks" class="reveal space-y-4">
+          <h3 class="pb-2 font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Jus & Drinks</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="card-hover rounded-xl bg-panel2 p-3 text-center">
+              <svg class="juice-icon mx-auto text-accent" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M21 8h18l-3 10H24L21 8Z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+                <path d="M27 17V46" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M17 13c0 11 4 19 15 19s15-8 15-19" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M19 46h26" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M30 27c0 0 5 2 10 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <circle cx="48" cy="41" r="9" stroke="currentColor" stroke-width="2.6"/>
+                <path d="M48 32v18M39 41h18M42.5 34.5l11 11M53.5 34.5l-11 11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+              <p class="mt-2 text-[10px] font-bold uppercase tracking-[0.16em]">Orange</p>
+              <p class="mt-1 text-[11px] font-bold text-accent">15 DH</p>
+            </div>
+            <div class="card-hover rounded-xl bg-panel2 p-3 text-center">
+              <svg class="juice-icon mx-auto text-accent" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M21 8h18l-3 10H24L21 8Z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+                <path d="M27 17V46" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M17 13c0 11 4 19 15 19s15-8 15-19" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M19 46h26" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M43 16c4 2 6 5 7 9M47 19l4-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <ellipse cx="49" cy="42" rx="11" ry="13" stroke="currentColor" stroke-width="2.6"/>
+                <path d="M43 41h12M43 46h12M46 36h6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+              <p class="mt-2 text-[10px] font-bold uppercase tracking-[0.16em]">Mangue</p>
+              <p class="mt-1 text-[11px] font-bold text-accent">20 DH</p>
+            </div>
+            <div class="card-hover rounded-xl bg-panel2 p-3 text-center">
+              <svg class="juice-icon mx-auto text-accent" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M21 8h18l-3 10H24L21 8Z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+                <path d="M27 17V46" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M17 13c0 11 4 19 15 19s15-8 15-19" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M19 46h26" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M44 18c3 0 5 2 5 5s-2 5-5 5c-1 0-2 0-3-1M44 18c-1 0-2 1-3 2M51 25c0 3-2 5-5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                <circle cx="48" cy="40" r="10" stroke="currentColor" stroke-width="2.6"/>
+                <circle cx="48" cy="40" r="2" fill="currentColor"/>
+              </svg>
+              <p class="mt-2 text-[10px] font-bold uppercase tracking-[0.16em]">Panache</p>
+              <p class="mt-1 text-[11px] font-bold text-accent">20 DH</p>
+            </div>
+            <div class="card-hover rounded-xl bg-panel2 p-3 text-center">
+              <svg class="juice-icon mx-auto text-accent" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M21 8h18l-3 10H24L21 8Z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+                <path d="M27 17V46" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M17 13c0 11 4 19 15 19s15-8 15-19" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M19 46h26" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M47 17c5 2 7 5 8 10M47 17c-4 1-6 3-8 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="49" cy="41" r="12" stroke="currentColor" stroke-width="2.6"/>
+                <path d="M39 41h20M49 31v20M42 34l14 14M56 34L42 48" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+              </svg>
+              <p class="mt-2 text-[10px] font-bold uppercase tracking-[0.16em]">Ananas</p>
+              <p class="mt-1 text-[11px] font-bold text-accent">20 DH</p>
+            </div>
+            <div class="card-hover rounded-xl bg-panel2 p-3 text-center">
+              <svg class="juice-icon mx-auto text-accent" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M21 8h18l-3 10H24L21 8Z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+                <path d="M27 17V46" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M17 13c0 11 4 19 15 19s15-8 15-19" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M19 46h26" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M44 34c-3 0-5 2-6 5M47 18c4 1 7 5 7 9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M42 39c0-2 2-3 4-3 3 0 5 2 5 5s-3 6-6 6c-2 0-3-1-4-2" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M47 17c4 2 5 4 6 8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+              </svg>
+              <p class="mt-2 text-[10px] font-bold uppercase tracking-[0.16em]">Avocat</p>
+              <p class="mt-1 text-[11px] font-bold text-accent">20 DH</p>
+            </div>
+            <div class="card-hover rounded-xl bg-panel2 p-3 text-center">
+              <svg class="juice-icon mx-auto text-accent" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M21 8h18l-3 10H24L21 8Z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+                <path d="M27 17V46" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M17 13c0 11 4 19 15 19s15-8 15-19" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M19 46h26" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <circle cx="48" cy="41" r="10" stroke="currentColor" stroke-width="2.6"/>
+                <path d="M40 41h16M48 33v16M42.5 35.5l11 11M53.5 35.5l-11 11" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+              <p class="mt-2 text-[10px] font-bold uppercase tracking-[0.16em]">Pomme</p>
+              <p class="mt-1 text-[11px] font-bold text-accent">14 DH</p>
+            </div>
+            <div class="card-hover rounded-xl bg-panel2 p-3 text-center">
+              <svg class="juice-icon mx-auto text-accent" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M21 8h18l-3 10H24L21 8Z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+                <path d="M27 17V46" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M17 13c0 11 4 19 15 19s15-8 15-19" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M19 46h26" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <circle cx="48" cy="41" r="10" stroke="currentColor" stroke-width="2.6"/>
+                <path d="M48 31v20M38 41h20M41.5 34.5l13 13M54.5 34.5l-13 13" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+              </svg>
+              <p class="mt-2 text-[10px] font-bold uppercase tracking-[0.16em]">Citron</p>
+              <p class="mt-1 text-[11px] font-bold text-accent">13 DH</p>
+            </div>
+            <div class="card-hover rounded-xl bg-panel2 p-3 text-center">
+              <svg class="juice-icon mx-auto text-accent" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M21 8h18l-3 10H24L21 8Z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+                <path d="M27 17V46" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M17 13c0 11 4 19 15 19s15-8 15-19" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M19 46h26" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+                <path d="M44 16c3 0 5 2 5 5s-2 5-5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                <path d="M41 42c0-4 3-7 7-7 4 0 7 3 7 7 0 3-2 5-4 6M45 48c0 2-1 3-3 4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <p class="mt-2 text-[10px] font-bold uppercase tracking-[0.16em]">Banane</p>
+              <p class="mt-1 text-[11px] font-bold text-accent">14 DH</p>
+            </div>
+          </div>
+          <div class="card-hover flex items-center justify-between rounded-xl bg-panel2 px-3 py-4">
+            <span class="text-[12px] font-bold uppercase tracking-[0.05em]">Soda / Eau Minerale</span>
+            <span class="text-[11px] font-bold text-accent">06 / 02 / 07 DH</span>
+          </div>
+        </section>
+
+        <section id="dessert" class="reveal space-y-4 pb-2">
+          <h3 class="text-center font-display text-[22px] font-extrabold uppercase tracking-[0.04em] text-accent">Dessert</h3>
+          <div class="overflow-hidden rounded-[1.35rem] bg-panel shadow-soft">
+            <img class="h-[180px] w-full object-cover" src="assets/dessert.png" alt="Desserts" />
+          </div>
+          <div class="grid grid-cols-3 gap-3 text-center">
+            <div>
+              <p class="text-[13px] font-extrabold">Crepe Nutella</p>
+              <p class="mt-1 text-[11px] font-bold text-accent">20 DH</p>
+            </div>
+            <div>
+              <p class="text-[13px] font-extrabold">Salade Fruit</p>
+              <p class="mt-1 text-[11px] font-bold text-accent">18 DH</p>
+            </div>
+            <div>
+              <p class="text-[13px] font-extrabold">Tiramisu</p>
+              <p class="mt-1 text-[11px] font-bold text-accent">16 DH</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="reveal rounded-[1.4rem] bg-panel p-4 shadow-soft">
+          <div class="space-y-2 text-center">
+            <p class="text-[12px] font-bold uppercase tracking-[0.2em] text-accent">Rue Mohammed Ben Abdallah</p>
+            <p class="text-[11px] text-muted">A proximite du bureau des missions, Ghazala a Boujdour</p>
+            <p class="text-[12px] font-bold">+212 706850226</p>
+            <p class="text-[10px] uppercase tracking-[0.18em] text-accent">Brunch Food Fast & Tasty</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) entry.target.classList.add("is-visible");
+          });
+        },
+        { threshold: 0.14, rootMargin: "0px 0px -12px 0px" }
+      );
+
+      document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+
+      const navLinks = [...document.querySelectorAll(".menu-link")];
+      const sections = navLinks.map((link) => document.querySelector(link.getAttribute("href"))).filter(Boolean);
+
+      const setActive = (id) => {
+        navLinks.forEach((link) => {
+          const active = link.getAttribute("href") === `#${id}`;
+          link.classList.toggle("active", active);
+          link.classList.toggle("text-text", active);
+          link.classList.toggle("text-muted", !active);
+        });
+      };
+
+      navLinks.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          const target = document.querySelector(link.getAttribute("href"));
+          if (!target) return;
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+          setActive(target.id);
+        });
+      });
+
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (visible) setActive(visible.target.id);
+        },
+        { threshold: [0.2, 0.35, 0.5], rootMargin: "-20% 0px -45% 0px" }
+      );
+
+      sections.forEach((section) => sectionObserver.observe(section));
+
+      document.querySelectorAll("[data-size-group]").forEach((group) => {
+        const buttons = [...group.querySelectorAll("[data-size-controls] .size-chip")];
+        const rows = [...group.querySelectorAll(".menu-size-row")];
+
+        const applySize = (size) => {
+          if (size === "fries") return;
+          rows.forEach((row) => {
+            const prices = JSON.parse(row.dataset.sizes || "{}");
+            const priceEl = row.querySelector(".menu-price");
+            const nextPrice = prices[size];
+            if (priceEl && nextPrice) {
+              priceEl.textContent = nextPrice;
+            }
+          });
+        };
+
+        buttons.forEach((button) => {
+          button.addEventListener("click", () => {
+            buttons.forEach((b) => b.classList.remove("active"));
+            button.classList.add("active");
+            const label = button.textContent.trim().toLowerCase();
+            const size = label.includes("double") ? "double" : label.includes("frites") ? "fries" : "normal";
+            applySize(size);
+          });
+        });
+
+        applySize("normal");
+      });
+    </script>
+  </body>
+</html>
