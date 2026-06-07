@@ -37,19 +37,152 @@ function price(value) {
   return `${Number(value).toFixed(Number.isInteger(value) ? 0 : 2)} DH`.replace(".00", "");
 }
 
-function iconForDrink(name) {
+function drinkIconVariant(name) {
   const n = name.toLowerCase();
-  if (n.includes("orange")) return "volunteer_activism";
-  if (n.includes("mangue")) return "nutrition";
-  if (n.includes("panache")) return "local_bar";
-  if (n.includes("ananas")) return "eco";
-  if (n.includes("avocat")) return "local_cafe";
-  if (n.includes("pomme")) return "spa";
-  if (n.includes("citron")) return "spa";
-  if (n.includes("banane")) return "restaurant_menu";
-  if (n.includes("soda")) return "sports_bar";
-  if (n.includes("eau")) return "water_drop";
-  return "local_drink";
+  if (n.includes("orange")) return "orange";
+  if (n.includes("mangue")) return "mango";
+  if (n.includes("panache")) return "grape";
+  if (n.includes("ananas")) return "pineapple";
+  if (n.includes("avocat")) return "avocado";
+  if (n.includes("pomme")) return "apple";
+  if (n.includes("citron")) return "lemon";
+  if (n.includes("banane")) return "banana";
+  if (n.includes("soda")) return "soda";
+  if (n.includes("eau")) return "water";
+  return "glass";
+}
+
+function drinkIconSvg(name) {
+  const variant = drinkIconVariant(name);
+
+  const svg = {
+    orange: `
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
+          <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
+          <path d="M22 16c-6 8-6 24 0 34m20-34c6 8 6 24 0 34" />
+          <path d="M28 10c1.7 2 2.8 4.4 3.2 7" />
+          <path d="M18 48h28" />
+          <path d="M25 20h14M23 28h18M24 36h16" opacity=".55" />
+          <circle cx="52" cy="42" r="7" />
+          <path d="M49 42h6M52 39v6" />
+        </g>
+      </svg>`,
+    mango: `
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
+          <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
+          <path d="M21 18c6 1 8 8 8 14s-2 13-8 14" />
+          <path d="M30 10c1.8 1.8 2.8 4 3.2 6.5" />
+          <path d="M18 48h28" />
+          <path d="M45 18h6l-3 7-3-7Z" />
+          <path d="M47 25c0 6 0 12 0 18" />
+          <path d="M50 31c-2 0-4 1.7-4 4s1.8 4 4 4" />
+        </g>
+      </svg>`,
+    grape: `
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
+          <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
+          <path d="M28 10c1.8 2 3 4.5 3.2 7" />
+          <path d="M18 48h28" />
+          <path d="M42 16c2-2 5-3 8-3" />
+          <path d="M47 16c-2 1-3 3-4 5" />
+          <circle cx="45" cy="34" r="4.2" />
+          <circle cx="50" cy="28" r="4.2" />
+          <circle cx="39.5" cy="28" r="4.2" />
+          <circle cx="45" cy="22" r="4.2" />
+          <circle cx="50.5" cy="22" r="4.2" />
+        </g>
+      </svg>`,
+    pineapple: `
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
+          <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
+          <path d="M28 10c0 4-2 6-4 8m8-8c0 4 2 6 4 8m-2-8c2 2 4 3 6 4" />
+          <path d="M18 48h28" />
+          <path d="M41 17 54 8" />
+          <path d="M43 16c2.5 2.5 4.2 5.5 5 9" />
+          <path d="M44 22c-3 0-5 2.2-5 5s2 5 5 5 5-2.2 5-5-2-5-5-5Z" opacity=".45" />
+          <path d="M29 20l6-4m-8 9 10-6m-11 13 12-7m-9 13 10-6" opacity=".55" />
+        </g>
+      </svg>`,
+    avocado: `
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
+          <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
+          <path d="M27 24c2-6 8-6 10 0s-2 14-5 14-7-8-5-14Z" />
+          <path d="M28 10c1.8 2 2.9 4.2 3.2 6.8" />
+          <path d="M18 48h28" />
+          <circle cx="48" cy="34" r="8" />
+          <path d="M48 26c4 0 7 3 7 8" />
+          <path d="M48 34l5 5" />
+        </g>
+      </svg>`,
+    apple: `
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
+          <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
+          <path d="M29 10c0 2.4 0 4.4 1 7" />
+          <path d="M33 10c1.8 2 3.2 3 6 3" />
+          <path d="M18 48h28" />
+          <circle cx="50" cy="34" r="7.5" />
+          <path d="M46 34h8" />
+          <path d="M50 30v8" />
+        </g>
+      </svg>`,
+    lemon: `
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
+          <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
+          <path d="M30 10c1.8 1.8 2.8 4.2 3.2 6.8" />
+          <path d="M18 48h28" />
+          <circle cx="49" cy="34" r="8" />
+          <path d="M49 26v16M41 34h16M43.5 28.5l11 11M54.5 28.5l-11 11" opacity=".55" />
+        </g>
+      </svg>`,
+    banana: `
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
+          <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
+          <path d="M18 48h28" />
+          <path d="M41 36c-6 1-12-1-17-6 3 7 8 12 15 15 6-1 10-5 13-11-3 2-7 2-11 2Z" />
+          <path d="M44 30 53 25" />
+          <path d="M45 31c2.5 1.5 4.5 3.5 6 6" opacity=".55" />
+        </g>
+      </svg>`,
+    soda: `
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
+          <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
+          <path d="M18 48h28" />
+          <path d="M26 20h12M25 28h14M24 36h16" />
+          <circle cx="48" cy="31" r="4" />
+          <path d="M48 23v8m-4-4h8" />
+          <circle cx="51" cy="40" r="3" opacity=".7" />
+        </g>
+      </svg>`,
+    water: `
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
+          <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
+          <path d="M18 48h28" />
+          <path d="M47 21c3 3 4 7 2 11-2 4-6 6-10 5" />
+          <path d="M48 21c-4 2-6 5-7 9" opacity=".55" />
+          <path d="M50 34c2 1 4 3 5 6" opacity=".55" />
+        </g>
+      </svg>`,
+    glass: `
+      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
+          <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
+          <path d="M18 48h28" />
+          <path d="M30 10c1.5 2 2.4 4.5 2.7 7" />
+        </g>
+      </svg>`,
+  }[variant];
+
+  return `<span class="drink-icon inline-flex h-12 w-12 items-center justify-center text-accent">${svg}</span>`;
 }
 
 function renderNav() {
@@ -263,12 +396,12 @@ function renderDrinks(category) {
     .slice(0, 8)
     .map(
       (item) => `
-        <div class="card-hover rounded-xl bg-panel2 p-3 text-center">
-          <span class="material-symbols-outlined text-[16px] text-accent">${iconForDrink(item.name)}</span>
-          <p class="mt-2 text-[10px] font-bold uppercase tracking-[0.16em]">${item.name}</p>
-          <p class="mt-1 text-[11px] font-bold text-accent">${price(item.price)}</p>
-        </div>
-      `
+          <div class="card-hover rounded-xl bg-panel2 p-3 text-center">
+            <div class="mx-auto flex h-12 w-12 items-center justify-center">${drinkIconSvg(item.name)}</div>
+            <p class="mt-2 text-[10px] font-bold uppercase tracking-[0.16em]">${item.name}</p>
+            <p class="mt-1 text-[11px] font-bold text-accent">${price(item.price)}</p>
+          </div>
+        `
     )
     .join("");
 
