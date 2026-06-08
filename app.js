@@ -8,6 +8,7 @@ const BURGER_IMAGE =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuAYZymr3MS3FRGjpCaPwioxJshlv7lHplngRsutY_DCvuZgQUTQYc_bLCURZdHUsyhvO6P16FK3Wizyf88ImmwAtTkhbpxJx5kMgE65erBr4g-5A_PUbe6Xg7G_X15vc-Eo_OhacKSh0CyDOw8mkb_mFKmOXBpG30DifLVRaf8U_K3Auy_LSumBwPGKvZTlbzlCZSveaQall4KOZP-fY7aG39L3jXboXkpLSVXrP3sD9BpQGcQya_-zA9Rt8AJftgRf0Dvmr3rI0y8";
 const PIZZA_IMAGE =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuAtmwXBnesjxs84Xzv8Yv08pSl_14OJPEcCnGvh2xpjJqpoe_S0PLPMzXlHTTawh55A5bj7yR_wSaPd6261aD880zf7cC2EicFBE-8IJUseJfj33OcxoZ6yah-VDXC3bjTDLiCi5ulMum6fhYJlDiFqFbo7-RWWRdYVrswJmYh7wu7KNeigppa4DK1ES72k_4zSnU76I7j2xytMoPZuNp8uYpppUqfcwpO2B-ppeb0aF41vXtzYpiWWSsAobgFLkxmhMZNk8_fRz2o";
+const SPLASH_BG = "assets/background.png";
 
 const categoryMeta = {
   burgers: { icon: "lunch_dining", image: BURGER_IMAGE, type: "hero" },
@@ -454,8 +455,22 @@ function renderApp() {
   const categories = menuCategories.map(renderCategory).join("");
 
   ROOT.innerHTML = `
+    <div id="welcome-splash" class="fixed inset-0 z-[100] overflow-hidden bg-bg transition-opacity duration-300">
+      <img class="absolute inset-0 h-full w-full object-cover scale-105" src="${SPLASH_BG}" alt="" aria-hidden="true" />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/85"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.28)_36%,rgba(0,0,0,0.68)_100%)]"></div>
+      <div class="relative z-10 flex h-full items-center justify-center px-6">
+        <div class="translate-y-6 text-center">
+          <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#24201d]/95 shadow-soft backdrop-blur-sm">
+            <img class="h-7 w-7 object-contain opacity-95" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAA0CAYAAAAaNmH0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAQZSURBVGhD7ZhfaFtVHMe/90+X9salDWmzdtEtrFtDYbbOsX9KRBkMRMYQcSV1DAUVwXZQmAx82XwRxgr78+KqIuylhckEFdEHfWhj2tm1Y2MraVmkf1galjS6NDZt0yTXB3Oz3GPOvTdpwl3hfh5/53fD53vuOSeHy9hsNhEbFJYsbCQMeb0w5PXCkNcLQ14vDHm9MOT1QrO89ZlNZKlkWIZBi8OCNqcVLQ4LWIYhWzTBaLkSd7id+KzzBVz6wY+rP0+Rw5p5rt6Ms542HNmzFYKJz9UjsRWc7b+L67/PyPrV4ARBOEcW82my1uDKhwfgsAk46KrHcjKDsUCUbFPlzUPbcK3nZbzYbEMVL3/h5moer7U1Yv6vZUzMPZaNKaG6bI4d3IbtdjMAQDDx+PTt3fjodRfZpkiH24nLH+xDvaWaHMohmHi8f2QXajZx5BAVVfl2Zx049smalAKceHWHrI/G3p02nPO0y5YJDafdjF1bLWSZiqp8Q+3/Z0sw8fj85B5NAbrecBX8jXKgKh+JrZAlQGMAl8OC/S0NZJlKMiVidS1NlqmoygdCcYiU80gtwPNOK2qFKrJMZSoYw4P5OFmmoip/c2oBsUSSLOdQClBdxUHrEb66lsaN4TlkaDNVAFV5nz+MX8aD1NlHXoAOt1NWjy+vIaPwXD7D/ggGBqfJsiKq8gBw5tptjEyGybIMwcTj1NFW2PM25/Sjf7CYWJP1FWIsEEVX3x9FzTq0yi+tpODp9WLYTw8QCMXhuTCEcHaDNzduxlfdh7Cljn7SiCLw290Q3un14tHjwgeDEpquBxLmah4Dp914qdUuqwdCcRw/P4i5yBKQFe//xI3mxs0AgFQ6g0hsFQ21JvAci2QqjYm5GK786MdPt4JFz7hEUfIoEECLeP/gNE5/M16yJI2i5ZEXwF5XoygOAL/eCaGz11t2cZQqj+y1lucYJFMZgCKO7Mxf/N6P8zfuy+rlQPVWSUMEkM6eg6S4KAIiRDAMA5ZlcKClHhzLwqew4UtB02mjRCHx70Zm8e4lH6LxVQAAz7HoOdaKM2/tJp5eHyXPPBTEu/tGMflwEfdm/sbh9iYIJr4ib6BkeSVxaR/Mhpdwb7ZyAUqSLyT+rW8GH38xihRxH6hkgKLlaeJdV0epx2GlAhQlX4q4RCUCaJYnxTOiiOveGXT33VIVl5gNL2H8z2ju68F6A2iSp4mf+lK7uMTDhUTZAqjKl1NcolwBVP+kPK84sb3hv08f5RCXGJmM4L3LPiwsPvkjO7r/WTRZa8hWKqozPzQRBsey2Ntsw8DQNHq+Hlu3uIT0Bg63NyEYTaCz14tgNEG2UdF8MXM5LHgwHy+beD4Om4CVZDp3ndCKZvmnEdU1/zRjyOuFIa8XhrxebGj5fwEIOuHOgXsLywAAAABJRU5ErkJggg==" alt="Spoon and knife" />
+          </div>
+          <p class="font-display text-[28px] font-extrabold uppercase leading-[0.92] tracking-[0.18em] text-accent drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">Brunch<br />Food</p>
+          <p class="mt-3 text-[11px] font-bold uppercase tracking-[0.35em] text-[#f4e7db]/85">Welcome</p>
+        </div>
+      </div>
+    </div>
     <div id="top"></div>
-    <div class="mx-auto min-h-screen max-w-[430px] bg-bg shadow-soft">
+    <div id="menu-shell" class="relative z-10 isolate mx-auto min-h-screen max-w-[430px] overflow-hidden bg-bg opacity-0 shadow-soft transition-all duration-500 translate-y-2 pointer-events-none">
       <header class="sticky top-0 z-50 bg-bg/95 backdrop-blur-md">
         <div class="flex items-center gap-2 px-3 py-3">
           <img class="h-[18px] w-[18px] object-contain" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAA0CAYAAAAaNmH0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAQZSURBVGhD7ZhfaFtVHMe/90+X9salDWmzdtEtrFtDYbbOsX9KRBkMRMYQcSV1DAUVwXZQmAx82XwRxgr78+KqIuylhckEFdEHfWhj2tm1Y2MraVmkf1galjS6NDZt0yTXB3Oz3GPOvTdpwl3hfh5/53fD53vuOSeHy9hsNhEbFJYsbCQMeb0w5PXCkNcLQ14vDHm9MOT1QrO89ZlNZKlkWIZBi8OCNqcVLQ4LWIYhWzTBaLkSd7id+KzzBVz6wY+rP0+Rw5p5rt6Ms542HNmzFYKJz9UjsRWc7b+L67/PyPrV4ARBOEcW82my1uDKhwfgsAk46KrHcjKDsUCUbFPlzUPbcK3nZbzYbEMVL3/h5moer7U1Yv6vZUzMPZaNKaG6bI4d3IbtdjMAQDDx+PTt3fjodRfZpkiH24nLH+xDvaWaHMohmHi8f2QXajZx5BAVVfl2Zx049smalAKceHWHrI/G3p02nPO0y5YJDafdjF1bLWSZiqp8Q+3/Z0sw8fj85B5NAbrecBX8jXKgKh+JrZAlQGMAl8OC/S0NZJlKMiVidS1NlqmoygdCcYiU80gtwPNOK2qFKrJMZSoYw4P5OFmmoip/c2oBsUSSLOdQClBdxUHrEb66lsaN4TlkaDNVAFV5nz+MX8aD1NlHXoAOt1NWjy+vIaPwXD7D/ggGBqfJsiKq8gBw5tptjEyGybIMwcTj1NFW2PM25/Sjf7CYWJP1FWIsEEVX3x9FzTq0yi+tpODp9WLYTw8QCMXhuTCEcHaDNzduxlfdh7Cljn7SiCLw290Q3un14tHjwgeDEpquBxLmah4Dp914qdUuqwdCcRw/P4i5yBKQFe//xI3mxs0AgFQ6g0hsFQ21JvAci2QqjYm5GK786MdPt4JFz7hEUfIoEECLeP/gNE5/M16yJI2i5ZEXwF5XoygOAL/eCaGz11t2cZQqj+y1lucYJFMZgCKO7Mxf/N6P8zfuy+rlQPVWSUMEkM6eg6S4KAIiRDAMA5ZlcKClHhzLwqew4UtB02mjRCHx70Zm8e4lH6LxVQAAz7HoOdaKM2/tJp5eHyXPPBTEu/tGMflwEfdm/sbh9iYIJr4ib6BkeSVxaR/Mhpdwb7ZyAUqSLyT+rW8GH38xihRxH6hkgKLlaeJdV0epx2GlAhQlX4q4RCUCaJYnxTOiiOveGXT33VIVl5gNL2H8z2ju68F6A2iSp4mf+lK7uMTDhUTZAqjKl1NcolwBVP+kPK84sb3hv08f5RCXGJmM4L3LPiwsPvkjO7r/WTRZa8hWKqozPzQRBsey2Ntsw8DQNHq+Hlu3uIT0Bg63NyEYTaCz14tgNEG2UdF8MXM5LHgwHy+beD4Om4CVZDp3ndCKZvmnEdU1/zRjyOuFIa8XhrxebGj5fwEIOuHOgXsLywAAAABJRU5ErkJggg==" alt="Spoon and knife" />
@@ -495,6 +510,16 @@ function renderApp() {
   `;
 
   installBehavior();
+
+  const splash = document.querySelector("#welcome-splash");
+  const shell = document.querySelector("#menu-shell");
+
+  window.setTimeout(() => {
+    splash?.classList.add("opacity-0");
+    shell?.classList.remove("opacity-0", "translate-y-2", "pointer-events-none");
+    shell?.classList.add("opacity-100", "translate-y-0", "pointer-events-auto");
+    window.setTimeout(() => splash?.remove(), 350);
+  }, 1500);
 }
 
 function installBehavior() {
