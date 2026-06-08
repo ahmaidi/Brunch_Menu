@@ -56,8 +56,8 @@ function drinkIconSvg(name) {
   const variant = drinkIconVariant(name);
 
   const svg = {
-    orange: `
-      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      orange: `
+      <svg class="block h-12 w-12" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
           <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
           <path d="M22 16c-6 8-6 24 0 34m20-34c6 8 6 24 0 34" />
@@ -69,7 +69,7 @@ function drinkIconSvg(name) {
         </g>
       </svg>`,
     mango: `
-      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <svg class="block h-12 w-12" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
           <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
           <path d="M21 18c6 1 8 8 8 14s-2 13-8 14" />
@@ -81,7 +81,7 @@ function drinkIconSvg(name) {
         </g>
       </svg>`,
     grape: `
-      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <svg class="block h-12 w-12" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
           <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
           <path d="M28 10c1.8 2 3 4.5 3.2 7" />
@@ -96,7 +96,7 @@ function drinkIconSvg(name) {
         </g>
       </svg>`,
     pineapple: `
-      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <svg class="block h-12 w-12" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
           <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
           <path d="M28 10c0 4-2 6-4 8m8-8c0 4 2 6 4 8m-2-8c2 2 4 3 6 4" />
@@ -108,7 +108,7 @@ function drinkIconSvg(name) {
         </g>
       </svg>`,
     avocado: `
-      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <svg class="block h-12 w-12" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
           <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
           <path d="M27 24c2-6 8-6 10 0s-2 14-5 14-7-8-5-14Z" />
@@ -120,7 +120,7 @@ function drinkIconSvg(name) {
         </g>
       </svg>`,
     apple: `
-      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <svg class="block h-12 w-12" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
           <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
           <path d="M29 10c0 2.4 0 4.4 1 7" />
@@ -132,7 +132,7 @@ function drinkIconSvg(name) {
         </g>
       </svg>`,
     lemon: `
-      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <svg class="block h-12 w-12" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
           <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
           <path d="M30 10c1.8 1.8 2.8 4.2 3.2 6.8" />
@@ -142,7 +142,7 @@ function drinkIconSvg(name) {
         </g>
       </svg>`,
     banana: `
-      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <svg class="block h-12 w-12" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
           <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
           <path d="M18 48h28" />
@@ -152,7 +152,7 @@ function drinkIconSvg(name) {
         </g>
       </svg>`,
     soda: `
-      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <svg class="block h-12 w-12" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
           <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
           <path d="M18 48h28" />
@@ -163,7 +163,7 @@ function drinkIconSvg(name) {
         </g>
       </svg>`,
     water: `
-      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <svg class="block h-12 w-12" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
           <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
           <path d="M18 48h28" />
@@ -173,7 +173,7 @@ function drinkIconSvg(name) {
         </g>
       </svg>`,
     glass: `
-      <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <svg class="block h-12 w-12" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true" focusable="false">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
           <path d="M22 12h20l-2 22c-.5 5.5-4.7 10-10 10s-9.5-4.5-10-10L22 12Z" />
           <path d="M18 48h28" />
